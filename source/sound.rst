@@ -14,9 +14,9 @@ Sounds are referred to using Minecraft's Keys (also known as ``Identifier`` or `
 
   public void playMySound(final @NonNull Audience target) {
     // Play a built-in sound at the target's location with standard volume and pitch
-    target.playSound(Key.of("music_disc.13"), Sound.Source.MUSIC, 1f, 1f);
+    target.playSound(Sound.sound(Key.key("music_disc.13"), Sound.Source.MUSIC, 1f, 1f));
     // Play a sound from our resource pack, with a higher pitch
-    target.playSound(Key.of("adventure", "rawr"), Sound.Source.AMBIENT, 1f, 1.1f);
+    target.playSound(Sound.sound(Key.key("adventure", "rawr"), Sound.Source.AMBIENT, 1f, 1.1f));
   }
 
 .. sidebar:: Limitations
@@ -28,6 +28,16 @@ Stopping Sounds
 
 A sound stop will stop the chosen sounds -- ranging from every sound the client is playing, to specific named sounds.
 
+.. code:: java
+
+   public void stopMySound(final @NonNull Audience target) {
+    // Stop a sound for the target
+    target.stopSound(SoundStop.named(Key.key("music_disc.13"));
+    // Stop all weather sounds for the target
+    target.stopSound(SoundStop.source(Sound.Source.WEATHER));
+    // Stop all sounds for the target
+    target.stopSound(SoundStop.all());
+  }
 
 Creating a custom sound
 -----------------------

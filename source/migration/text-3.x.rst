@@ -3,8 +3,8 @@ Migrating from text 3.x
 =======================
 
 Adventure is an evolution of the text 3.x API. If you've worked with
-the text API before, the switch to Adventure should be quick and relatively
-painless. For the most part, you'll just need to depend on the Adventure API
+the text API before, the switch to Adventure should be relatively quick. 
+For the most part, you'll just need to depend on the Adventure API
 and the relevant :doc:`/platform/index` you support and replace references
 to classes in ``net.kyori.text`` to ``next.kyori.adventure.text``, though see
 below for major breaking changes.
@@ -21,12 +21,36 @@ to players.
 Breaking changes from text 3.x
 ------------------------------
 
+Factory methods renamed
+^^^^^^^^^^^^^^^^^^^^^^^
+In text 3.x, components could be constructed using the ``<type>Component.of()`` methods. 
+In Adventure, we've changed to using ``Component.<type>(/*...*/)`` style methods to allow 
+for easier static imports.
+
+Similarly, ``Style.of(/*...*/)`` is changed to ``Style.style(/*...*/)``.
+
+``.builder()``
+^^^^^^^^^^^^^^
+Builders are now created by calling the aforementioned factory methods with no parameters.
+For example, ``TextComponent.builder()`` becomes ``Component.text()``.
+
+Note that the equivalent of ``TextComponent.builder("hello")`` is ``Component.text().content("hello")``.
+
+``.append()`` with a String argument
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Component builders in 3.x had a shorthand for appending a new text component: ``builder.append("wow")``.
+In Adventure you have to write it in full, ``builder.append(Component.text("wow"))`` in this case.
+
 ``LegacyComponentSerializer``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In text 3.x, you would deserialize a component that used a color code prefix that
 differed from the section symbol normally used by using ``LegacyComponentSerializer.legacy().deserialize(string, altChar)``.
 In Adventure, the API to use is ``LegacyComponentSerializer.legacy(altChar).deserialize(string)``.
+
+To make a linking serializer you have to use the builder.
+Change ``LegacyComponentSerializer.legacyLinking(style)``
+to ``LegacyComponentSerializer.builder().extractUrl(style).build()``.
 
 ``TextColor`` renamed to ``NamedTextColor``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
